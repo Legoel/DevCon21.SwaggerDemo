@@ -1,8 +1,8 @@
+using System.Text;
+using DevCon21.SwaggerDemo.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using DevCon21.SwaggerDemo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,21 +15,21 @@ builder.Services.AddDbContext<TodoListContext>(
 
 var secret = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Authentication:JwtToken:Secret"));
 builder.Services.AddAuthentication(configure =>
-    {
-        configure.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        configure.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
+{
+    configure.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    configure.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(configure =>
+{
+    configure.SaveToken = true;
+    configure.TokenValidationParameters = new TokenValidationParameters
     {
-        configure.SaveToken = true;
-        configure.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(secret),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(secret),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 
 var app = builder.Build();

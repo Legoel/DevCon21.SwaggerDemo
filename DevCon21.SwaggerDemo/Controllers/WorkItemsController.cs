@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using DevCon21.SwaggerDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DevCon21.SwaggerDemo.Models;
 
 namespace DevCon21.SwaggerDemo.Controllers
 {
@@ -19,7 +15,6 @@ namespace DevCon21.SwaggerDemo.Controllers
         }
 
         // GET: api/WorkItems
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkItem>>> GetTasks()
         {
@@ -64,7 +59,6 @@ namespace DevCon21.SwaggerDemo.Controllers
         }
 
         // POST: api/WorkItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<WorkItem>> PostTask(WorkItem task)
         {

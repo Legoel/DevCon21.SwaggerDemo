@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DevCon21.SwaggerDemo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DevCon21.SwaggerDemo.Models;
 
 namespace DevCon21.SwaggerDemo.Controllers
 {
@@ -19,7 +16,6 @@ namespace DevCon21.SwaggerDemo.Controllers
         }
 
         // GET: api/CategoriesTree
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<HierarchicalCategory>> GetCategoriesTree()
         {

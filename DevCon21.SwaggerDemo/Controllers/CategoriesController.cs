@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using DevCon21.SwaggerDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DevCon21.SwaggerDemo.Models;
 
 namespace DevCon21.SwaggerDemo.Controllers
 {
@@ -19,7 +15,6 @@ namespace DevCon21.SwaggerDemo.Controllers
         }
 
         // GET: api/Categories
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
@@ -38,8 +33,21 @@ namespace DevCon21.SwaggerDemo.Controllers
             return category;
         }
 
+        // GET: api/Categories/5/workitems
+        [HttpGet("{id}/workitems")]
+        public async Task<ActionResult<IEnumerable<WorkItem>>> GetCategoryWorkItems(long id)
+        {
+            var category = await _context.Categories
+                .Include(c => c.WorkItems)
+                .SingleOrDefaultAsync(c => c.Id == id);
+
+            if (category == null)
+                return NotFound();
+
+            return Ok(category.WorkItems);
+        }
+
         // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(long id, Category category)
         {
@@ -61,7 +69,6 @@ namespace DevCon21.SwaggerDemo.Controllers
         }
 
         // POST: api/Categories
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {

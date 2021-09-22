@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DevCon21.SwaggerDemo.Models
 {
@@ -14,7 +13,6 @@ namespace DevCon21.SwaggerDemo.Models
         public long PersonId { get; set; }
         [JsonIgnore]
         public Person Person { get; set; }
-        //public ICollection<Person> Helpers { get; set; }
         public ICollection<string> Tags { get; set; } = new List<string>();
     }
 }

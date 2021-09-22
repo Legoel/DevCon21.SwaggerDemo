@@ -20,14 +20,14 @@ namespace DevCon21.SwaggerDemo.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
         {
-            return await _context.People.Include(p => p.WorkItems).ToListAsync();
+            return await _context.People.ToListAsync();
         }
 
         // GET: api/People/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(long id)
         {
-            var person = await _context.People.Include(p => p.WorkItems).SingleOrDefaultAsync(p => p.Id == id);
+            var person = await _context.People.SingleOrDefaultAsync(p => p.Id == id);
 
             if (person == null)
                 return NotFound();
@@ -35,10 +35,23 @@ namespace DevCon21.SwaggerDemo.Controllers
             return person;
         }
 
+        // GET: api/People/5/workitems
+        [HttpGet("{id}/workitems")]
+        public async Task<ActionResult<IEnumerable<WorkItem>>> GetPersonWorkitems(long id)
+        {
+            var person = await _context.People
+                .Include(p => p.WorkItems)
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (person == null)
+                return NotFound();
+
+            return Ok(person.WorkItems);
+        }
+
         // PUT: api/People/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize("Administrator")]
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutPerson(long id, Person person)
         {
             if (id != person.Id)
@@ -59,8 +72,8 @@ namespace DevCon21.SwaggerDemo.Controllers
         }
 
         // POST: api/People
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
             _context.People.Add(person);
@@ -71,6 +84,7 @@ namespace DevCon21.SwaggerDemo.Controllers
 
         // DELETE: api/People/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeletePerson(long id)
         {
             var person = await _context.People.FindAsync(id);

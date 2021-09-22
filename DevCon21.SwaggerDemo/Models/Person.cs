@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
 namespace DevCon21.SwaggerDemo.Models
 {
@@ -6,7 +6,7 @@ namespace DevCon21.SwaggerDemo.Models
     {
         public long Id { get; set; }
         public string FullName { get; set; }
+        [JsonIgnore]
         public ICollection<WorkItem> WorkItems { get; set; }
-        //public ICollection<WorkItem> ParticipatingWorkItems { get; set; }
     }
 }
