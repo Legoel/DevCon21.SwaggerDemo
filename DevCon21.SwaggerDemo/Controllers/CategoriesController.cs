@@ -1,10 +1,13 @@
 ﻿using DevCon21.SwaggerDemo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevCon21.SwaggerDemo.Controllers
 {
     [ApiController, Route("api/[controller]")]
+    [Authorize]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class CategoriesController : ControllerBase
     {
         private readonly TodoListContext _context;
@@ -16,6 +19,7 @@ namespace DevCon21.SwaggerDemo.Controllers
 
         // GET: api/Categories
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
             return await _context.Categories.ToListAsync();
